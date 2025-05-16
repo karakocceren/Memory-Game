@@ -29,11 +29,8 @@ function App() {
   const [matchedCount, setMatchedCount] = useState(0);
   const [gameFinished, setGameFinished] = useState(false);
   const [turns, setTurns] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isCardFlipped, setIsCardFlipped] = useState(false);
-
-  const handleFlip = () => setIsFlipped(!isFlipped);
-  const handleCardFlip = () => setIsCardFlipped(!isCardFlipped);
+  const [time, setTime] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
 
   const shuffleCards = () => {
     const shuffled = [...cardImages, ...cardImages]
@@ -52,13 +49,24 @@ function App() {
     setDisabled(false);
     setFirstChoice(null);
     setSecondChoice(null);
+    setTime(0);
+    setTimerActive(false);
     shuffleCards();
   };
 
   const handleChoice = (card) => {
     if (!disabled && card !== firstChoice && !card.matched) {
+      if (!timerActive) {
+        setTimerActive(true);
+      }
       firstChoice ? setSecondChoice(card) : setFirstChoice(card);
     }
+  };
+
+  const resetTurn = () => {
+    setFirstChoice(null);
+    setSecondChoice(null);
+    setDisabled(false);
   };
 
   useEffect(() => {
@@ -85,11 +93,15 @@ function App() {
     }
   }, [matchedCount]);
 
-  const resetTurn = () => {
-    setFirstChoice(null);
-    setSecondChoice(null);
-    setDisabled(false);
-  };
+  useEffect(() => {
+    let timer;
+    if (timerActive && !gameFinished) {
+      timer = setInterval(() => {
+        setTime(prev => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [timerActive, gameFinished]);
 
   useEffect(() => {
     shuffleCards();
@@ -97,9 +109,22 @@ function App() {
 
   return (
     <div className="app">
-      <button className="new-game-button" onClick={handleNewGame}>
-        New Game
-      </button>
+      <h1 className="game-title">Stardew Match</h1>
+
+      <div className="stats-container">
+        <button className="new-game-button" onClick={handleNewGame}>
+          New Game
+        </button>
+        <div className="stats">
+          <div className="turns">
+            {turns} moves
+          </div>
+          <div className="time">
+            Time: {Math.floor(time / 60)}:{String(time % 60).padStart(2, '0')}
+          </div>
+        </div>
+      </div>
+
       <div className="game-container">
         <div className={`game-container-inner ${gameFinished ? 'flipped' : ''}`}>
           <div className="game-container-front">
@@ -123,7 +148,12 @@ function App() {
             </div>
           </div>
           <div className="game-container-back">
-            <h2>Congratulations!</h2>
+            <div className="congrats-message">
+              <h2>🎉 Congratulations! 🎉</h2>
+              <p>You completed the game in</p>
+              <p><strong>{turns}</strong> moves</p>
+              <p><strong>{time}</strong> seconds</p>
+            </div>
           </div>
         </div>
       </div>

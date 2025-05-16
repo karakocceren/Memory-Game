@@ -3,16 +3,24 @@
   text-align: center;
 }
 
-.game-container {
-  width: 400px;
-  height: 400px;
-  perspective: 1000px;
-  margin: auto;
+.game-title {
+  font-family: "Raleway", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #333;
+  text-shadow: 1px 1px 2px #fff;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
 }
 
 .new-game-button {
-  margin-bottom: 20px;
-  background-color: #ff944d;
+  background-color: #603808;
   border: none;
   padding: 10px 20px;
   font-size: 1.1rem;
@@ -23,7 +31,28 @@
 }
 
 .new-game-button:hover {
-  background-color: #e67e22;
+  background-color: #6F4518;
+}
+
+.stats {
+  text-align: start;
+  margin-left: 10px;
+}
+
+.turns {
+
+}
+
+.time {
+
+}
+
+.game-container {
+  width: 90vw;
+  max-width: 400px;
+  aspect-ratio: 1;
+  perspective: 1000px;
+  margin: auto;
 }
 
 .game-container-inner {
@@ -45,7 +74,7 @@
   height: 100%;
   backface-visibility: hidden;
   border: 1px solid #ccc;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -53,25 +82,30 @@
 }
 
 .game-container-front {
-  background-color: #f0f0f0;
+  background-color: #603808;
 }
 
 .game-container-back {
-  background-color: #333;
+  background-color: #603808;
   color: white;
   transform: rotateY(180deg);
 }
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(4, 90px);
-  grid-template-rows: repeat(4, 90px);
-  gap: 5px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .card-container {
-  width: 90px;
-  height: 90px;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
   perspective: 600px;
 }
 
@@ -109,12 +143,46 @@
 }
 
 .card-front {
-  background-color: #ffe0bd;
+  background-color: #FFEDD8;
   transform: rotateY(180deg);
 }
 
 .card-back {
-  background-color: #ffe0bd;
+  background-color: #FFEDD8;
   transform: rotateY(0deg);
   cursor: pointer;
+}
+
+.congrats-message {
+  text-align: center;
+  padding: 20px;
+}
+
+.congrats-message h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #FFEDD8;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.congrats-message p {
+  font-size: 1.2rem;
+  margin: 6px 0;
+}
+
+@media (max-width: 600px) {
+  .game-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .new-game-button {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  .turns,
+  .time {
+    font-size: 0.95rem;
+  }
 }
